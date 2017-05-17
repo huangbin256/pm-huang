@@ -1,0 +1,18 @@
+@import "./colors.pcss";
+
+/* --------- Layout Mixins --------- */
+@define-mixin fitparent{
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+}
+@define-mixin clearfix{
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+/* --------- /Layout Mixins --------- */

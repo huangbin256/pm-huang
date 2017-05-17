@@ -1,0 +1,88 @@
+@import "../pcss/utils.pcss";
+
+.MainView{
+	@mixin fitparent;
+	display: flex;
+	flex-direction: column;
+
+	.main-header{
+		background: $bkg-lighter;
+		border-bottom: solid 1px $bdr-light;
+		height: 64px;
+		display: flex;
+		flex-direction: row;
+		
+		.brand{
+			margin-left: 32px;
+			overflow: hidden;
+			h1{
+				font-size: 24px;
+				padding-top: 8px;
+				letter-spacing: .1em;
+			}
+			h2{
+				color: $txt-light;
+				text-align: right;
+				letter-spacing: .1em;
+			}
+		}
+
+		.user-info{
+			font-size: 18px;
+			letter-spacing: .1em;
+			padding: 8px;
+			color: $txt-light;
+			
+			align-self: center; /*  apply this property to this flex item (from its parent) */
+
+			/* The other way to align the children is to have this element being a flex
+			   and use the align-items as: */
+			/*   
+			display: flex;			   			   
+			align-items: center;
+			*/
+			
+			/* full explanation:  http://stackoverflow.com/a/33049392/686724 */
+		}
+
+	}
+
+	.main-frame{
+		flex: 1;
+		display: flex;
+		flex-direction: row;
+		background: $bkg-lightest;
+		
+		
+		.main-nav{
+			/* border: solid 1px blue; */
+			width: 200px;
+			background: $bkg-darkest;
+			color: $txt-lightest;
+			padding-top: 32px;
+			
+			a{
+				color: $txt-lightest;
+				display: block;
+				padding: 8px;
+				text-decoration: none;
+				font-size: 18px;
+				margin-bottom: 16px;
+				
+				&.active{
+					font-weight: bold;
+					background: $bkg-lightest;
+					color: $txt;
+				}
+			}
+		}
+
+		.main-content{
+			flex: 1;
+			padding: 16px;
+			display: flex;
+			flex-direction: row;
+		}
+	}
+
+}
