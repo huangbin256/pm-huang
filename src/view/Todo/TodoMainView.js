@@ -16,12 +16,10 @@ d.register("TodoMainView",{
 	postDisplay: function(){
 		var view = this; // best practice, set the view variable first. 
 
-
 		view.newTodoIpt = d.first(view.el, "footer .new-todo");
 		view.newTodoIpt.focus();
 
-
-		refreshViewFromRoute.call(view);
+		refreshList.call(view);
 	},
 
 	events: {
@@ -114,6 +112,11 @@ d.register("TodoMainView",{
 				break;
 			}
 		},
+		"click; .btn-delete": function(e){
+			var view = this;
+			var entityRef = utils.entityRef(e.target, "Todo");
+			todoDso.remove(entityRef.id);
+		}
 		// --------- /todo-item UI Events --------- //		
 	}, // .events
 
@@ -121,7 +124,6 @@ d.register("TodoMainView",{
 	hubEvents: {
 		"dataHub; Todo": function(data, info){
 			var view = this;
-
 			refreshList.call(view);
 		}, 
 
@@ -184,7 +186,7 @@ function editTodo(entityRef){
 
 	// create the input HTML and add it to the entity element
 	var inputHTML = render("TodoMainView-input-edit", {subject: currentSubject});
-	todoEl.insertAdjacentHTML("beforeend", inputHTML);
+	labelEl.insertAdjacentHTML("afterend", inputHTML);
 
 	// set the focus and selection on the input element
 	var inputEl = d.first(todoEl, "input");
@@ -192,58 +194,10 @@ function editTodo(entityRef){
 	inputEl.setSelectionRange(0, inputHTML.length);
 }
 
-
-// refresh the full view
-function refreshViewFromRoute(){
-	var view = this;
-
-	// get the path1
-	// var routeInfo = route.getInfo();
-	// // get the path1
-	// var path1 = routeInfo.pathAt(1);
-	// path1 = (!path1)?"":path1;
-
-	// // if the path1 changed, we udpate the nav and refresh the list
-	// if (view.path1 !== path1){
-	// 	this.show = (path1)?path1:"all";
-
-	// 	d.all(view.el, "footer .filter-bar .filter.active").forEach(function(el){
-	// 		el.classList.remove("active");
-	// 	});
-
-	// 	var href = (path1)?'#todo/' + path1:'#todo';
-	// 	var toActiveEl = d.first(view.el, "footer .filter-bar .filter[href='" + href + "']");
-	// 	if (toActiveEl){
-	// 		toActiveEl.classList.add("active");
-	// 	}
-
-	// 	// refresh the list
-	// 	refreshList.call(view);
-
-	// 	view.path1 = path1;
-
-	// }
-}
-
-
 // private: refrensh the todo list of items
 function refreshList(){
 	var view = this;
-	var filters = null;
-	switch(view.show){
-	case "all":
-		// not filter
-		break;
-	case "active":
-		// done can be null/undefined or false
-		filters = [{done: null}, {done: false}];
-		break;
-	case "completed":
-		filters = {done: true};
-		break;
-	}
-
-	todoDso.list({filters: filters}).then(function(todos){
+	todoDso.list().then(function(todos){
 		var html = render("TodoMainView-todo-items",{items:todos});
 		d.first(view.el,".items").innerHTML = html;
 	});	

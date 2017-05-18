@@ -1,26 +1,34 @@
 <script id="TodoMainView" type="text/html">
 <div class="TodoMainView">
-	<section class="todos-card">		
-		<header>
-			<input class="search-todo">
-		</header>
+	<section class="todos-card">
 		<section class="todos-table">
 			<div class="ui-table">
 				<div class="ui-thead">
+					<div></div>
 					<div>Name</div>
-					<div>Info</div>
+					<div></div>
 				</div>
-				<div class="ui-tbody">
-					<div class="ui-tr">
-						<div>Name</div>
-						<div>Info</div>
-					</div>
+				<div class="ui-tbody items">
 				</div>
 			</div>		
 		</section>
 		<footer>
-			<input class="new-todo">
+			<input class="new-todo" />
 		</footer>
 	</section>
 </div>
+</script>
+
+<script id="TodoMainView-todo-items" type="text/html">
+{{#each items}}
+<div class="ui-tr todo-item {{echo done 'todo-done'}}" data-entity="Todo" data-entity-id="{{id}}">
+	<div class="ctrl-check"></div>
+	<label class="dx dx-subject">{{subject}}</label>
+	<div><div class="btn btn-delete">Delete</div></div>
+</div>
+{{/each}}
+</script>
+
+<script id="TodoMainView-input-edit" type="text/html">
+<input type="text" name="newSubject" class="dx" value="{{subject}}">
 </script>

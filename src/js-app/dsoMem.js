@@ -101,12 +101,12 @@ DsoMem.prototype.list = function(opts){
 };
 
 DsoMem.prototype.first = function(opts){
-	var type = this.type;
+	var type = this._type;
 	// FIXME: need to implement
 };
 
 DsoMem.prototype.remove = function(id){
-	var type = this.type;
+	var type = this._type;
 
 	return new Promise(function(resolve, reject){
 		resolve(store.remove(type, id));
@@ -155,7 +155,7 @@ var store = {
 	remove: function(type, id){
 		var entityStore = entityStores[type];
 		if (entityStore && entityStore[id]){
-			delete entityStore.delete(id);
+			delete entityStore[id];
 			return true;
 		}
 		return false;		
