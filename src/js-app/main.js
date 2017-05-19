@@ -1,7 +1,7 @@
 var d = mvdom; // external lib
 var route = require("./route.js");
 var ds = require("./ds.js");
-var DsoMem = require("./dsoMem.js");
+var DsoRest = require("./dsoRest.js");
 
 /**
  * This module do not externalize anything, but just start the application. 
@@ -13,7 +13,7 @@ var DsoMem = require("./dsoMem.js");
 // --------- DataService Initialization --------- //
 // For the demo, we will have the Memory Dso fallback for any type the application might use. 	
 ds.fallback(function(type){
-	return new DsoMem(type);
+	return new DsoRest(type);
 });
 
 // For production, you might want to have some Entity DSO object that you would register as follow

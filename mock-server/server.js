@@ -104,7 +104,7 @@ function initServer(){
 		}
 	});
 
-	// self.load(require('./api/os-usage.js'));
+	self.load(require('./api/api-todo.js'));
 
 	// bind APIs
 	//this.load(require('./api/api-spherechart.js'));
