@@ -45,8 +45,23 @@
 					display: none;
 				}
 			}
+			&.todo-done{
+				.check-td{
+					background-color: $color-prim;
+				}
+			}
+			input.editing{
+				outline: none;
+				border: none;
+			}
+		}
+
+		.check-td{
+			flex: none;
+			width: 48px;
+			height: 32px;
 		}
 	} /* .todo-card */
-
+	
 
 }

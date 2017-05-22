@@ -4,7 +4,7 @@
 		<section class="todos-table">
 			<div class="ui-table">
 				<div class="ui-thead">
-					<div></div>
+					<div class="check-td"></div>
 					<div>Name</div>
 					<div></div>
 				</div>
@@ -22,7 +22,7 @@
 <script id="TodoMainView-todo-items" type="text/html">
 {{#each items}}
 <div class="ui-tr todo-item {{echo done 'todo-done'}}" data-entity="Todo" data-entity-id="{{id}}">
-	<div class="ctrl-check"></div>
+	<div class="check-td ctrl-check"></div>
 	<label class="dx dx-subject">{{subject}}</label>
 	<div><div class="btn btn-delete">Delete</div></div>
 </div>
@@ -30,5 +30,5 @@
 </script>
 
 <script id="TodoMainView-input-edit" type="text/html">
-<input type="text" name="newSubject" class="dx" value="{{subject}}">
+<input type="text" name="newSubject" class="dx editing" value="{{subject}}">
 </script>
