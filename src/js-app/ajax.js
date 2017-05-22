@@ -12,18 +12,18 @@ module.exports = {
 // application APIs. 
 
 // use for get and list
-function get(path, data){
-	return ajax('GET', path, data, null);
+function get(path, data, opts){
+	return ajax('GET', path, data, opts);
 }
 
 // use for create 
-function post(path, data, asBody){
-	return ajax('POST', path, data, asBody);
+function post(path, data, opts){
+	return ajax('POST', path, data, opts);
 }
 
 // use for update
-function put(path, data, asBody){
-	return ajax('PUT', path, data, asBody);
+function put(path, data, opts){
+	return ajax('PUT', path, data, opts);
 }
 
 // use for delete
@@ -31,13 +31,15 @@ function _delete(path, data){
 	return ajax('DELETE', path, data, null);
 }
 
+var defaultOpts = {
+	contentType: "application/json"
+};
 
-function ajax(type, path, data, asBody){
+function ajax(type, path, data, opts){
+	opts = Object.assign({}, defaultOpts, opts);
 
 	// if asBody is not defined
-	if (asBody == null && (type === 'POST' || type === 'PUT' )){
-		asBody = true;
-	}
+	var asBody = (opts.asBody == null && (type === 'POST' || type === 'PUT' ));
 
 	return new Promise(function(resolve, reject){
 		var xhr = new XMLHttpRequest();
@@ -49,14 +51,22 @@ function ajax(type, path, data, asBody){
 		}
 
 		xhr.open(type, url);
-		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.setRequestHeader("Content-Type", opts.contentType);
 
 		xhr.onload = function() {
 			if (xhr.status === 200) {
 				try{
-					var response = JSON.parse(xhr.responseText);
+					var response = xhr.responseText;
+					// if the content type was application/json, then, just parse it
+					if (opts.contentType === "application/json"){
+						response = JSON.parse(response);
+					}
+					// parse the XML as well
+					else if (opts.contentType === "application/xml"){
+						response = new DOMParser().parseFromString(response, "application/xml");
+					}
+
 					resolve(response);
-					return;
 				} catch (ex){
 					reject("Cannot do ajax request to '" + url + "' because \n\t" + ex);
 				}
