@@ -2,13 +2,15 @@
 
 .MainView{
 	@mixin fitparent;
+	z-index: 100;
 	display: flex;
 	flex-direction: column;
 
 	.main-header{
-		background: $bkg-lighter;
-		border-bottom: solid 1px $bdr-light;
-		height: 64px;
+		@mixin elev-4;
+		background: $color-prim-darker;
+		z-index: 100;
+		height: 72px;
 		display: flex;
 		flex-direction: row;
 		
@@ -16,14 +18,17 @@
 			margin-left: 32px;
 			overflow: hidden;
 			h1{
+				color: $txt-on-prim-dark;
 				font-size: 24px;
 				padding-top: 8px;
 				letter-spacing: .1em;
 			}
 			h2{
-				color: $txt-light;
+				color: $txt-on-prim-dark;
+				opacity: .8;
+				font-weight: 100;
 				text-align: right;
-				letter-spacing: .1em;
+				letter-spacing: .15em;
 			}
 		}
 
@@ -51,24 +56,37 @@
 		flex: 1;
 		display: flex;
 		flex-direction: row;
-		background: $bkg-lightest;
+		background: $color-grey-lightest;
 		
 		
 		.main-nav{
 			/* border: solid 1px blue; */
 			width: 200px;
-			background: $bkg-darkest;
-			color: $txt-lightest;
+			background: $color-prim-lightest;
+			color: $txt-on-prim;
 			padding-top: 32px;
 			
 			a{
-				color: $txt-lightest;
-				display: block;
+				color: $txt-on-prim;
+				display: flex;
 				padding: 8px;
 				text-decoration: none;
 				font-size: 18px;
 				margin-bottom: 16px;
+				align-items: center;
 				
+				i{					
+					width: 32px;
+					height: 32px;
+					fill: #555;
+				}
+
+				label{
+					margin-left: 18px;
+					display: block;
+					flex: 1;
+				}
+
 				&.active{
 					font-weight: bold;
 					background: $bkg-lightest;

@@ -130,7 +130,7 @@ d.register("TodoMainView",{
 		"routeHub; CHANGE": function(routeInfo){
 			var view = this;
 
-			refreshViewFromRoute.call(view);
+			// refreshViewFromRoute.call(view);
 		}
 	}
 
