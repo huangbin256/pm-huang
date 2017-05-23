@@ -68,7 +68,7 @@ d.register("TodoMainView",{
 
 		// double clicking on a label makes it editable
 		"dblclick; label": function(evt){
-			editTodo.call(this, utils.entityRef(evt.target, "Todo"));
+			editTodo.call(this, utils.entityRef(evt.target, "Todo"), d.closest(evt.target, "label"));
 		}, 
 
 		// when the todo-item input get focus out (we cancel by default)
@@ -88,6 +88,7 @@ d.register("TodoMainView",{
 			var view = this;
 			var inputEl = evt.target;
 			var entityRef = utils.entityRef(inputEl, "Todo");
+			var siblingLabelEl = (evt.shiftKey)?d.prev(inputEl,"label.dx"):d.next(inputEl,"label.dx");
 
 			switch(evt.key){
 			case "Enter":
@@ -100,13 +101,17 @@ d.register("TodoMainView",{
 			case "Tab":					
 				commitEditing.call(view, entityRef).then(function(){
 					var entityEl = d.first(view.el, ".items .todo-item[data-entity-id='" + entityRef.id + "']");
-					var siblingTodoEl = (evt.shiftKey)?d.prev(entityEl,".todo-item"):d.next(entityEl,".todo-item");
-					if (siblingTodoEl){
-						var siblingTodoRef = utils.entityRef(siblingTodoEl, "Todo");	
-						editTodo.call(this, siblingTodoRef);
+					if(siblingLabelEl){
+						editTodo.call(this, entityRef, siblingLabelEl);
 					}else{
-						// todo: need to focus on the first new-todo
-						view.newTodoIpt.focus();
+						var siblingTodoEl = (evt.shiftKey)?d.prev(entityEl,".todo-item"):d.next(entityEl,".todo-item");
+						if (siblingTodoEl){
+							var siblingTodoRef = utils.entityRef(siblingTodoEl, "Todo");
+							editTodo.call(this, siblingTodoRef);
+						}else{
+							// todo: need to focus on the first new-todo
+							view.newTodoIpt.focus();
+						}
 					}
 				});
 				break;
@@ -142,11 +147,14 @@ d.register("TodoMainView",{
 function commitEditing(entityRef){
 	return new Promise(function(resolve, fail){
 		// Get the name/value of the elements marked by class="dx"
-		var data = d.pull(entityRef.el);		
+		var data = d.pull(entityRef.el);
+		var labelEl = d.first(entityRef.el, "label.editing");
 
-		// if the newSubject (in the input) is different, then, we update.
-		if (data.subject !== data.newSubject){
-			todoDso.update(entityRef.id, {subject: data.newSubject}).then(function(){
+		// if the newValue (in the input) is different, then, we update.
+		if (data.subject !== data.newValue){
+			var submitData = {};
+			submitData[labelEl.getAttribute("data-key")] = data.newValue;
+			todoDso.update(entityRef.id, submitData).then(function(){
 				// NOTE: no need to remove the editing state as the list will be rebuilt. 
 				resolve();	
 			});
@@ -167,6 +175,8 @@ function cancelEditing(entityRef){
 	return new Promise(function(resolve, fail){
 		// remove the editing class
 		entityRef.el.classList.remove("editing");
+		var labelEl = d.first(entityRef.el, "label.editing");
+		labelEl.classList.remove("editing");
 
 		// we can remove the input element
 		var inputEl = d.first(entityRef.el, "input");
@@ -176,16 +186,17 @@ function cancelEditing(entityRef){
 }
 
 
-function editTodo(entityRef){
+function editTodo(entityRef, labelEl){
 	var todoEl = entityRef.el;
 
-	var labelEl = d.first(todoEl, "label");
-	var currentSubject = labelEl.innerHTML;
+	labelEl = labelEl || d.first(todoEl, "label.dx");
+	var currentValue = labelEl.innerHTML;
 
 	todoEl.classList.add("editing");
+	labelEl.classList.add("editing");
 
 	// create the input HTML and add it to the entity element
-	var inputHTML = render("TodoMainView-input-edit", {subject: currentSubject});
+	var inputHTML = render("TodoMainView-input-edit", {key: labelEl.getAttribute("data-key"), value: currentValue});
 	labelEl.insertAdjacentHTML("afterend", inputHTML);
 
 	// set the focus and selection on the input element

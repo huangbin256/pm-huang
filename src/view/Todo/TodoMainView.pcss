@@ -41,7 +41,7 @@
 
 		.todo-item{
 			&.editing{
-				label{
+				label.editing{
 					display: none;
 				}
 			}
@@ -53,6 +53,9 @@
 			input.editing{
 				outline: none;
 				border: none;
+			}
+			label{
+				min-height: 16px;
 			}
 		}
 
