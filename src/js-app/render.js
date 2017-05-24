@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 
-function render(templateName, data){
+function render(templateName, data, returnsFragment){
 	var tmpl = Handlebars.templates[templateName];
 
 	// if not found, throw an error
@@ -27,6 +27,20 @@ function render(templateName, data){
 	}
 
 	// call the function and return the result
-	return tmpl(data);
+	var html = tmpl(data);
+
+	if (returnsFragment){
+		var template = document.createElement("template");
+		if (template.content){
+			template.innerHTML = html;
+			return template.content;
+		}
+		// for IE 11
+		else{
+			return document.createRange().createContextualFragment(html);
+		}
+	}else{
+		return html;
+	}
 }
 // --------- /Render --------- //
