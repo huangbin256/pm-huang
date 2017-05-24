@@ -34,8 +34,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	svgSymbolsPromise.then(function(xmlDoc){
 
 		// add the symbols to the head (external linking works but has issues - styling, and caching -)
-		document.querySelector("head").appendChild(xmlDoc.firstElementChild);
-
+		var firstChildElement = xmlDoc.firstChildElement || xmlDoc.childNodes[0]; // edge does not seem to have .firstChildElement, at least for xlmDoc
+		document.querySelector("head").appendChild(firstChildElement);
 
 		//// We can display the MainView now
 		var bodyEl = d.first("body");

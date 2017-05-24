@@ -5,7 +5,8 @@
 
 /* --------- Layout Mixins --------- */
 @define-mixin ripple{
-
+	position: relative;
+	overflow: hidden;
 	&:after {
 		content: "";
 		display: block;
@@ -28,7 +29,6 @@
 		opacity: .2;
 		transition: 0s;
 	}
-
 }
 
 @define-mixin fitparent{
