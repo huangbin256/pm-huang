@@ -27,7 +27,13 @@
 	<div class="check-td ctrl-check"></div>
 	<label class="dx dx-subject" data-key="subject">{{subject}}</label>
 	<label class="dx dx-description" data-key="description">{{description}}</label>
-	<div class="progress-td"><div class="ui-progress-bar"><div class="ui-progress-item"></div></div></div>
+	<div class="progress-td">
+		<div class="ui-progress-bar">
+			<div class="ui-progress-item" style="left: {{echoNum done 0}}%"></div>
+			<div class="value">{{echoNum done 0}}%</div>
+		</div>
+		<input class="ui-progress-input" value="{{echoNum done 0}}"/>
+	</div>
 	<div><div class="btn btn-delete">Delete</div></div>
 </div>
 {{/each}}

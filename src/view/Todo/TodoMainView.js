@@ -78,7 +78,7 @@ d.register("TodoMainView",{
 		}, 
 
 		// when the todo-item input get focus out (we cancel by default)
-		"focusout; .todo-item input": function(evt){
+		"focusout; .todo-item input.editing": function(evt){
 			var view = this;
 			var entityRef = utils.entityRef(evt.target, "Todo");
 
@@ -90,7 +90,7 @@ d.register("TodoMainView",{
 		}, 
 
 		// when user type enter or tab in the todo-item input
-		"keyup; .todo-item input": function(evt){
+		"keyup; .todo-item input.editing": function(evt){
 			var view = this;
 			var inputEl = evt.target;
 			var entityRef = utils.entityRef(inputEl, "Todo");
@@ -127,6 +127,14 @@ d.register("TodoMainView",{
 			var view = this;
 			var entityRef = utils.entityRef(e.target, "Todo");
 			todoDso.remove(entityRef.id);
+		},
+
+		"change; .ui-progress-bar": function(evt){
+			var barEl = evt.selectTarget;
+			var entityRef = utils.entityRef(evt.target, "Todo");
+			var val = d.next(barEl, "input").value;
+
+			todoDso.update(entityRef.id, {done:val});
 		}
 		// --------- /todo-item UI Events --------- //		
 	}, // .events
